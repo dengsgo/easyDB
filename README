@@ -2,4 +2,30 @@ EasyDB是一个基于PDO的数据库操作类，它使用了PDO的精髓--预编
 而EasyDB是优雅的，它继承自PDO,没有破坏PDO的任何方法，只是在此基础上增加一些易于使用操作方法和简单的链式操作，它的的设计初衷就是完善和简化MySQL等数据库的相关操作。引入它，你仍可以直接像使用PDO那样使用它。
 
 ##使用方法##
-在你的项目中引入EasyDB.php文件之后，你就可以像这样使用
+在你的项目中引入EasyDB.php文件之后，你就可以像这样使用：
+
+$db = new EasyDB();
+$sql = 'select * from table where id = ?';
+$result = $db->queryOne($sql, array(2));
+
+好的，你现在就已经获取到你想要的结果了！同样，您也可以这样写：
+
+$db = new EasyDB();
+$sql = 'select * from table where id = :id';
+$array = array(
+      ':id' => 2
+);
+$result = $db->queryOne($sql, $array);
+
+我强烈建议你不要在直接用变量拼装SQL语句，这是危险和不明智的，因为已经有PDO预编译这么好的机制，为什么不用它呢？就像上面的例子，用它是不是很简单。
+
+除了常用的增删改查方法，EasyDB还封装了一些简单的链式操作，注意：这里这是一些简单的链式操作，对于复杂的语句还是执行写语句来的痛快。
+
+$db = new EasyDB();
+$db->table_select('table')->field('name')->where('id=?')->go(array(2));
+
+是的。链式操作就是这么简单。
+
+好了，具体的一些方法大家可以直接看源码，我在其中都有注释，如果有什么问题可以直接微博@deng-dev 
+
+~~~~~~
